@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EduTrack — School Management</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- boxicons used for small icons -->
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="brand">
+        <div class="logo">EduTrack</div>
+        <button id="collapseBtn" class="icon-btn" title="Collapse sidebar"><i class="bx bx-chevron-left"></i></button>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-target="dashboard"><i class='bx bx-grid-alt'></i><span>Dashboard</span></button>
+        <button class="nav-btn" data-target="attendance"><i class='bx bx-check-square'></i><span>Attendance</span></button>
+        <button class="nav-btn" data-target="timetable"><i class='bx bx-calendar'></i><span>Timetable</span></button>
+        <button class="nav-btn" data-target="assignments"><i class='bx bx-book-open'></i><span>Assignments</span></button>
+        <button class="nav-btn" data-target="announcements"><i class='bx bx-bell'></i><span>Announcements</span></button>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="darkToggle" class="btn small">Dark</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="search">
+          <input id="globalSearch" placeholder="Search (students, assignments, announcements)..." aria-label="global search">
+        </div>
+        <div class="profile">
+          <i class='bx bx-user-circle'></i>
+          <div>
+            <div class="name">Administration</div>
+            <div class="role">School Admin</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard -->
+      <section id="dashboard" class="page active">
+        <h2>Dashboard</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Total Students</h3>
+            <div class="metric" id="metricStudents">0</div>
+            <div class="muted">Students registered</div>
+          </div>
+          <div class="card">
+            <h3>Today's Attendance</h3>
+            <div class="metric" id="metricAttendance">0%</div>
+            <div class="muted">Present vs total</div>
+          </div>
+          <div class="card">
+            <h3>Pending Assignments</h3>
+            <div class="metric" id="metricAssignments">0</div>
+            <div class="muted">Not submitted / assigned</div>
+          </div>
+        </div>
+        <div class="panel-row">
+          <div class="panel">
+            <h4>Recent Announcements</h4>
+            <ul id="dashAnnouncements" class="list compact"></ul>
+          </div>
+          <div class="panel">
+            <h4>Upcoming Timetable</h4>
+            <table id="dashTimetable" class="table small"></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Attendance -->
+      <section id="attendance" class="page">
+        <div class="page-header">
+          <h2>Attendance</h2>
+          <div>
+            <button class="btn" id="openAddStudent">Add Student</button>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <div class="panel wide">
+            <h4>Students List</h4>
+            <div class="table-actions">
+              <input id="filterStudents" placeholder="Filter students by name">
+            </div>
+            <table id="studentsTable" class="table">
+              <thead><tr><th>Name</th><th>Class</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div class="panel">
+            <h4>Quick Mark</h4>
+            <p>Mark all present or absent quickly</p>
+            <div class="btn-group">
+              <button class="btn" id="markAllPresent">Mark All Present</button>
+              <button class="btn outline" id="markAllAbsent">Mark All Absent</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Timetable -->
+      <section id="timetable" class="page">
+        <div class="page-header">
+          <h2>Timetable</h2>
+          <div>
+            <button class="btn" id="openTimetableForm">Add Period</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>Weekly Timetable</h4>
+          <table id="timetableTable" class="table">
+            <thead><tr><th>Day</th><th>Period</th><th>Subject</th><th>Teacher</th><th>Action</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Assignments -->
+      <section id="assignments" class="page">
+        <div class="page-header">
+          <h2>Assignments</h2>
+          <div>
+            <button class="btn" id="openAssignmentForm">New Assignment</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>Assignments</h4>
+          <table id="assignmentsTable" class="table">
+            <thead><tr><th>Title</th><th>Class</th><th>Due</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Announcements -->
+      <section id="announcements" class="page">
+        <div class="page-header">
+          <h2>Announcements</h2>
+          <div>
+            <button class="btn" id="openAnnouncementForm">Post Announcement</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>Announcement Feed</h4>
+          <ul id="announcementsList" class="list"></ul>
+        </div>
+      </section>
+
+      <footer class="footer">© 2025 EduTrack • School Management</footer>
+    </main>
+  </div>
+
+  <!-- MODALS -->
+  <div id="modalBackdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal" role="document" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" title="Close">✕</button>
+      <h3 id="modalTitle">Modal</h3>
+      <form id="modalForm"></form>
+      <div class="modal-actions">
+        <button class="btn" id="modalSave">Save</button>
+        <button class="btn outline" id="modalCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
